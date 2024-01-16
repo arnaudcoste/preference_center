@@ -3,11 +3,13 @@ const { createApp, ref, computed } = Vue;
 const app = createApp({
   setup() {
     const someValue = ref(10);
-    const name = ref('Your name');
+    const text = ref('Enter your text');
+    const inputText = ref('guest');
     const someComputed = computed(() => someValue.value * 10);
     return {
       someValue,
-      name,
+      text,
+      inputText,
       someComputed
     }
   }

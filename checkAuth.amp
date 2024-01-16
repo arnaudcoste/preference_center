@@ -8,6 +8,7 @@ subdomain = "mc07z44c3c7xglxb57jy8st38v7q",    // SFMC tenant
 redirect_uri = "https://mc07z44c3c7xglxb57jy8st38v7q.pub.sfmc-content.com/daqmk2ickct";     // URL of the CloudPage that hosts your app
 
 var auth = false;
+var name = "guest";
 
 try {
     var authToken = Platform.Request.GetCookieValue("authToken");
@@ -35,7 +36,7 @@ try {
                     var tokenResponse = Platform.Function.ParseJSON(accessTokenRequest.Response[0]);
                     //Write('<br/><br/>tokenResponse : '+Stringify(tokenResponse));
                     authToken = tokenResponse.access_token;
-                    Write('<br/><br/>Authentication OK > authToken : '+authToken);
+                    //Write('<br/><br/>Authentication OK > authToken : '+authToken);
                     Platform.Response.SetCookie("authToken", authToken);
                     auth = true;
                 }
@@ -45,7 +46,7 @@ try {
             }
         }
     } else {
-        Write('<br/>authToken from Cookie : '+authToken);
+        //Write('<br/>authToken from Cookie : '+authToken);
         auth = true;
     }
 
@@ -53,11 +54,11 @@ try {
         var headerNames = ["Authorization"];
         var headerValues = ["Bearer " + authToken];
         var urlCreate = "https://"+subdomain+".auth.marketingcloudapis.com/v2/userinfo";
-        Write('<br/><br/>HTTP Get User info');
+        //Write('<br/><br/>HTTP Get User info');
         try {
           var response = HTTP.Get(urlCreate, headerNames, headerValues);
-          var name = Platform.Function.ParseJSON(response.Content).user.name;
-          Write('<br/><br/>Welcome '+name);
+          name = Platform.Function.ParseJSON(response.Content).user.name;
+          //Write('<br/><br/>Welcome '+name);
         } catch(e) {
           Platform.Response.SetCookie("authToken", '');
           Platform.Response.Redirect(redirect_uri);
@@ -67,5 +68,7 @@ try {
     Write('<br/>Sorry an error occurred during authentication process<br/>=> Error: '+e);
     Platform.Response.SetCookie("authToken", '');
 }
+
+Variable.SetValue("@name", name)
 
 </script>
