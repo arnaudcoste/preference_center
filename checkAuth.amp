@@ -1,0 +1,71 @@
+<!-- CODE SNIPPET -->
+<script runat="server">
+Platform.Load("core", "1.1.1");
+
+var client_id = "oxz2aq3iwydncs1tk1nqhsst",    // API client_id from the installed package
+client_secret = "ruenHzcRO9e4TK9b6LmursJp",    // API client_secret
+subdomain = "mc07z44c3c7xglxb57jy8st38v7q",    // SFMC tenant
+redirect_uri = "https://mc07z44c3c7xglxb57jy8st38v7q.pub.sfmc-content.com/daqmk2ickct";     // URL of the CloudPage that hosts your app
+
+var auth = false;
+
+try {
+    var authToken = Platform.Request.GetCookieValue("authToken");
+    if (authToken == null || authToken == '') {
+        //Write('<br/>authToken does not exist in Cookie')
+        var authCode = Request.GetQueryStringParameter("code");
+        if (authCode == null) {
+            //Write('<br/><br/>Before Redirect')
+            Platform.Response.Redirect("https://"+ subdomain + ".auth.marketingcloudapis.com/v2/authorize?response_type=code&client_id=" + client_id + "&redirect_uri=" + redirect_uri);
+        } else {
+            var url = "https://"+ subdomain + ".auth.marketingcloudapis.com/v2/token"
+            var contentType = "application/json";
+            var payload = {
+                "grant_type": "authorization_code",
+                "code": authCode,
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "redirect_uri": redirect_uri
+            };
+            
+             //Write('<br/>Before HTTP Post to get the Token from the Authorization Code')
+             try {
+                var accessTokenRequest = HTTP.Post(url, contentType, Stringify(payload));
+                if (accessTokenRequest.StatusCode == 200) {
+                    var tokenResponse = Platform.Function.ParseJSON(accessTokenRequest.Response[0]);
+                    //Write('<br/><br/>tokenResponse : '+Stringify(tokenResponse));
+                    authToken = tokenResponse.access_token;
+                    Write('<br/><br/>Authentication OK > authToken : '+authToken);
+                    Platform.Response.SetCookie("authToken", authToken);
+                    auth = true;
+                }
+            } catch (error) {
+                auth = false;
+                Platform.Response.Redirect(redirect_uri);
+            }
+        }
+    } else {
+        Write('<br/>authToken from Cookie : '+authToken);
+        auth = true;
+    }
+
+    if (auth == true) { // If user connected, get the user info
+        var headerNames = ["Authorization"];
+        var headerValues = ["Bearer " + authToken];
+        var urlCreate = "https://"+subdomain+".auth.marketingcloudapis.com/v2/userinfo";
+        Write('<br/><br/>HTTP Get User info');
+        try {
+          var response = HTTP.Get(urlCreate, headerNames, headerValues);
+          var name = Platform.Function.ParseJSON(response.Content).user.name;
+          Write('<br/><br/>Welcome '+name);
+        } catch(e) {
+          Platform.Response.SetCookie("authToken", '');
+          Platform.Response.Redirect(redirect_uri);
+        }
+    }
+} catch(e) {
+    Write('<br/>Sorry an error occurred during authentication process<br/>=> Error: '+e);
+    Platform.Response.SetCookie("authToken", '');
+}
+
+</script>
