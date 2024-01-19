@@ -1,0 +1,12 @@
+%%[
+    var @systemDate, @localDate, @clientCode, @title
+    
+    SET @clientCode = "Baulieu"
+    SET @title = RequestParameter("title")
+    SET @subtitle = RequestParameter("subtitle")
+    SET @systemDate  = Now(1)
+    SET @updatedDate = SystemDateToLocalDate(@systemDate)
+    
+    UpsertDE("preferences",1,"client_code", @clientCode, "title", @title, "subtitle", @subtitle, "Updated", @updatedDate)
+    
+]%%

@@ -1,4 +1,31 @@
 <!-- CODE SNIPPET -->
+
+%%[
+
+var @title,@subtitle,@brandColor,@backColor,@fontFamily,@brandImage,@communicationTitle,@communicationText,@thankyouTitle,@thankyouText,@errorTitle,@errorText,@urlTemplate
+var @row, @rows, @clientCode
+
+set @clientCode = "baulieu"
+
+set @rows = LookupRows("preferences", "client_code", @clientCode)
+set @row = Row(@rows, 1) /* there is only one row per client_code */
+set @title = Field(@row, "title")
+set @subtitle = Field(@row, "subtitle")
+set @brandColor = Field(@row, "brand_color")
+set @backColor = Field(@row, "back_color")
+set @fontFamily = Field(@row, "font_family")
+set @brandImage = Field(@row, "brand_image")
+set @communicationTitle = Field(@row, "communication_title")
+set @communicationText = Field(@row, "communication_text")
+set @thankyouTitle = Field(@row, "thankyou_title")
+set @thankyouText = Field(@row, "thankyou_text")
+set @urlTemplate = Field(@row, "url_template")
+set @errorText = Field(@row, "error_text")
+set @errorTitle = Field(@row, "error_title")
+
+]%%
+
+
 <script runat="server">
 Platform.Load("core", "1.1.1");
 

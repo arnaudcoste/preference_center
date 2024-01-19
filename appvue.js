@@ -4,13 +4,15 @@ const app = createApp({
   setup() {
     const someValue = ref(10);
     const text = ref('Enter your text');
-    const inputText = ref('guest');
-    const someComputed = computed(() => someValue.value * 10);
+    const inputText = ref('');
+    const choiceAction = () => {
+      console.log('choiceAction: ', inputText.value)
+    }
     return {
       someValue,
       text,
       inputText,
-      someComputed
+      choiceAction
     }
   }
 });

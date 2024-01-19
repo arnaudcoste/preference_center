@@ -8,13 +8,23 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.14/vue.global.min.js" integrity="sha512-uxaHSQ7Q87tR5i7R9NXb3hvLKtdl3h3HlU8pBc6ABkkRj0h5amgIE6DVGUlZ84waM7/uOkr4iUUB7aHkN3RPTw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
  <script src="https://cdn.tailwindcss.com"></script>
+ <style>
+  body {
+    font-family: Georgia, serif;
+  }
+ </style>
 </head>
 <body>
   <div data-type="slot" data-key="col1"></div>
-  <div class="bg-blue-600 text-white p-4 text-2xl font-sans">
-    <i class="fa-solid fa-house mr-2"></i>Welcome %%=v(@name)=%% (v2.7)
-  </div>
-  <div id="app">
+  <div id="app" class="text-sm">
+    <div class="bg-blue-600 text-white p-4 text-lg flex">
+      <div class="flex-none">
+        <i class="fa-solid fa-house mr-2 text-left"></i>Preference Center v3.3
+      </div>
+      <div class="flex-auto text-right">
+        <i class="fa-solid fa-house mr-2"></i>%%=v(@name)=%%
+      </div>
+    </div>
     <div class="grid grid-flow-col grid-cols-4">
       <div class="text-lg bg-blue-800 text-white p-4">
         <div>Preference Center</div>
@@ -25,8 +35,13 @@
           <i class="fa-solid fa-wrench mr-2"></i>Advanced settings
         </div>
       </div>
-      <div class="text-lg bg-stone-50 col-span-3 p-12">Main content
-        <input type="text" v-model="inputText" :placeholder="text" class="border border-slate-400 m-4" />Realtime text : {{ inputText }}
+      <div class="text-lg bg-stone-50 col-span-3 p-12">
+        <form action="https://mc07z44c3c7xglxb57jy8st38v7q.pub.sfmc-content.com/fnr1rlwaaek" method="POST">
+          <label for="title">Main Title:</label>
+         <input type="text" value="%%=v(@title)=%%" name="title" id="title" :placeholder="text" class="border border-slate-400 m-4" /><br/>
+          <input type="text" value="%%=v(@subtitle)=%%" name="subtitle" id="subtitle" :placeholder="text" class="border border-slate-400 m-4" />
+         <button type="submit" class="rounded bg-cyan-800 p-2 text-white">Submit</button>
+        </form>
       </div>
     </div>
     <div class="bg-slate-100 p-4 text-sm">
