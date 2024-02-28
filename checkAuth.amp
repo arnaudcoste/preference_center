@@ -25,7 +25,6 @@ set @errorTitle = Field(@row, "error_title")
 
 ]%%
 
-
 <script runat="server">
 Platform.Load("core", "1.1.1");
 

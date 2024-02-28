@@ -1,0 +1,18 @@
+%%[
+
+    set @ci = "003Wx000000s3qXIAQ"
+    set @result = UpdateSingleSalesforceObject('Contact', @ci, 'HasOptedOutOfEmail','false')
+
+]%%
+<!DOCTYPE html>
+<html>
+   <body>
+      <h2>Update SF result :</h2>
+
+      %%[ if @result == 1 then ]%%
+      <strong>Update OK!</strong>
+      %%[ else ]%%
+      <strong>Update KO!</strong>
+      %%[ endif ]%%
+   </body>
+</html>
